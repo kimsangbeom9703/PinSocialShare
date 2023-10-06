@@ -8,7 +8,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
+// const usersRouter = require('./routes/users');
+const apiRouter = require('./routes/api');
 
 const app = express();
 
@@ -20,10 +21,17 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+// app.use(express.static(path.join(__dirname, 'public'))); // react 로 변경
+app.use(express.static(path.join(process.cwd(), '/frontend/dist')));
+
+//app.use('/',express.static(path.join(process.cwd(), '/frontend/dist')));
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api', apiRouter);
+// app.use( '/admin', express.static( path.join(__dirname, 'frontend/build') )) //서브디렉토리에 리액트 적용시
+// app.use('/admin', adminRouter);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
