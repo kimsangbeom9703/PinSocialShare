@@ -3,9 +3,12 @@
     "concurrently": "^8.2.1"
   },
   "scripts": {
-    "start": "node server/index.js",
-    "backend": "nodemon server/index.js",
+    "start": "node backend/bin/www",
+    "backend": "nodemon backend/bin/www",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev" : "concurrently \"npm run backend\" \"npm run start --prefix client\"",
+    "dev": "concurrently \"npm run backend\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
