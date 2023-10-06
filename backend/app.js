@@ -1,3 +1,6 @@
+require('dotenv').config()
+process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -37,5 +40,11 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+if (process.env.NODE_ENV == 'production') {
+  console.log("Production Mode");
+} else if (process.env.NODE_ENV == 'development') {
+  console.log("Development Mode");
+}
 
 module.exports = app;
