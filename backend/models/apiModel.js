@@ -1,7 +1,6 @@
 'use strict';
-
-module.exports = {
-    test : () => {
+export default {
+    data: () => {
         const data = [
             { id: 1, name: 'Item 1' },
             { id: 2, name: 'Item 2' },
@@ -9,6 +8,6 @@ module.exports = {
             { id: 4, name: 'Item 56' },
             { id: 5, name: 'Item 5' },
         ];
-        return data
+        return data;
     }
-}
+};

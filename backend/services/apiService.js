@@ -1,7 +1,9 @@
 'use strict';
-const apiModel = require('../models/apiModel')
-module.exports = {
-    getData : () => {
-        return apiModel.test()
+
+import apiModel from '../models/apiModel.js';
+
+export default {
+    getData: () => {
+        return apiModel.data();
     }
-}
+};

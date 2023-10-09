@@ -1,18 +1,27 @@
-'use strict';
+import dotenv from 'dotenv';
+dotenv.config();
 
-require('dotenv').config()
-process.env.NODE_ENV = ( process.env.NODE_ENV && ( process.env.NODE_ENV ).trim().toLowerCase() == 'production' ) ? 'production' : 'development';
+const nodeEnv = process.env.NODE_ENV;
+process.env.NODE_ENV = nodeEnv && nodeEnv.trim().toLowerCase() === 'production' ? 'production' : 'development';
 
-const createError = require('http-errors');
-const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const cors = require('cors');
+import createError from 'http-errors';
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import cors from 'cors';
+import { fileURLToPath } from 'url';
+import path,{ dirname, join } from 'path';
 
-const indexRouter = require('./routes/index');
-// const usersRouter = require('./routes/users');
-const apiRouter = require('./routes/api');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const currentDir = dirname(__filename);
+
+// 상위 디렉토리의 경로를 구성합니다.
+const parentDir = join(currentDir, '..'); // 상위 디렉토리로 이동
+const staticDir = join(parentDir, 'frontend', 'dist');
+console.log(staticDir)
+import indexRouter from './routes/index.js';
+import apiRouter from './routes/api.js';
 
 const app = express();
 
@@ -25,33 +34,30 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
 // app.use(express.static(path.join(__dirname, 'public'))); // react 로 변경
-app.use(express.static(path.join(process.cwd(), '/frontend/dist')));
+app.use(express.static(staticDir));
 
-//app.use('/',express.static(path.join(process.cwd(), '/frontend/dist')));
+// app.use('/', express.static(path.join(process.cwd(), '/frontend/dist')));
 app.use('/', indexRouter);
 
-//특정 주소 cors 확인
-let corsOptions = {
-  origin: 'http://127.0.0.1:3001',
-  credentials: true
-}
-app.use('/api', cors(corsOptions));
+// 특정 주소 cors 확인
+// let corsOptions = {
+//   origin: 'http://127.0.0.1:3000',
+//   credentials: true
+// }
+// app.use('/api', cors(corsOptions));
 app.use('/api', apiRouter);
 
-// app.use( '/admin', express.static( path.join(__dirname, 'frontend/build') )) //서브디렉토리에 리액트 적용시
+// app.use( '/admin', express.static( path.join(__dirname, 'frontend/build') )) // 서브디렉토리에 리액트 적용시
 // app.use('/admin', adminRouter);
 
-
-
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -61,4 +67,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;

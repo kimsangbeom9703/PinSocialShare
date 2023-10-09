@@ -4,9 +4,11 @@
  * Module dependencies.
  */
 
-const app = require('../app');
-const debug = require('debug')('backend:server');
-const http = require('http');
+import app from "../app.js"; // 확장자 .js 추가
+import debug from 'debug';
+import http from 'http';
+
+const debugLog = debug('backend:server');
 
 /**
  * Get port from environment and store in Express.
@@ -59,8 +61,8 @@ function onError(error) {
   }
 
   const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+      ? 'Pipe ' + port
+      : 'Port ' + port;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -84,7 +86,7 @@ function onError(error) {
 function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+      ? 'pipe ' + addr
+      : 'port ' + addr.port;
+  debugLog('Listening on ' + bind);
 }
